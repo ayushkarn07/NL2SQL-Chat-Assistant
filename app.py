@@ -1,14 +1,13 @@
 import streamlit as st
 import sqlite3
 import pandas as pd
-import os
 from groq import Groq
 
-# CONFIG
 st.set_page_config(page_title="NL2SQL Chat Assistant", layout="wide")
 
-os.environ["GROQ_API_KEY"] = "YOUR_API_KEY"   # <-- put your API
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+# Secure API key
+GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+client = Groq(api_key=GROQ_API_KEY)
 
 DB_PATH = "school.db"
 
