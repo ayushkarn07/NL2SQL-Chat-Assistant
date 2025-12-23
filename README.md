@@ -8,6 +8,8 @@ A Streamlit Interface - **Natural Language to SQL (NL2SQL)** application that le
 -  Full **chat history** with a bottom input bar
 
 Built using **Streamlit**, **SQLite**, **Groq LLMs**, and **Python**.
+## URL
+https://nl2sqlayush.streamlit.app/
 
 ---
 
