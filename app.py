@@ -3,19 +3,15 @@ import sqlite3
 import pandas as pd
 from groq import Groq
 
-# ======================================================
 # CONFIG
-# ======================================================
 st.set_page_config(page_title="NL2SQL Chat Assistant", layout="wide")
 
-# ✅ Secure API key (from Streamlit Secrets)
+# Secure API key (from Streamlit Secrets)
 client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
 DB_PATH = "school.db"
 
-# ======================================================
-# DATABASE (AUTO INITIALIZATION)
-# ======================================================
+# DATABASE 
 conn = sqlite3.connect(DB_PATH)
 cursor = conn.cursor()
 
@@ -67,9 +63,7 @@ cursor.executemany(
 conn.commit()
 conn.close()
 
-# ======================================================
 # SCHEMA & PROMPTS
-# ======================================================
 SCHEMA = """
 Table: students
 Columns:
@@ -110,9 +104,7 @@ You are a data analyst.
 Give ONE clear, short sentence summarizing the result for a non-technical user.
 """
 
-# ======================================================
 # FUNCTIONS
-# ======================================================
 def generate_sql(question):
     response = client.chat.completions.create(
         model="llama-3.1-8b-instant",
@@ -160,18 +152,14 @@ Result:
     )
     return response.choices[0].message.content.strip()
 
-# ======================================================
 # SESSION STATE
-# ======================================================
 if "chat" not in st.session_state:
     st.session_state.chat = []
 
-# ======================================================
 # UI
-# ======================================================
 st.title("🤖 NL2SQL Chat Assistant")
 
-# -------- DATABASE PREVIEW (SIDE BY SIDE) --------
+# DATABASE PREVIEW
 st.markdown("## 📋 Database Tables")
 
 left_col, right_col = st.columns(2)
@@ -186,7 +174,7 @@ with right_col:
 
 st.divider()
 
-# -------- CHAT HISTORY --------
+# CHAT HISTORY
 for msg in st.session_state.chat:
     if msg["role"] == "user":
         st.chat_message("user").markdown(msg["content"])
@@ -201,7 +189,7 @@ for msg in st.session_state.chat:
             st.markdown("**📊 Result Table**")
             st.dataframe(msg["df"], use_container_width=True)
 
-# -------- INPUT --------
+# INPUT
 question = st.chat_input("Ask a question about the database...")
 
 if question:
